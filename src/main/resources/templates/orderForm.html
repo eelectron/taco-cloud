@@ -30,13 +30,16 @@ xmlns:th="http://www.thymeleaf.org">
 		
 		<label for="city">City :</label>
 		<input type="text" th:field="*{city}"/>
+		</br>
 		
 		<h3>Here's how I'll pay</h3>
 		<label for="ccNumber">Credit Card #:</label>
 		<input type="text" th:field="*{ccNumber}"/>
+		<span class="validationError"
+			th:if="${#fields.hasErrors('ccNumber')}"
+			th:errors="*{ccNumber}">CC Num Error</span>
+		</br>
 		
-		
-		<input type="text" th:field="*{name}"/>
 		<input type="submit" value="Submit order"/>
 	</form>
 </body>
