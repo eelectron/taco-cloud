@@ -1,5 +1,7 @@
 package tacos.web;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
 import tacos.Order;
+import tacos.User;
 import tacos.data.OrderRepository;
+import tacos.data.UserRepository;
 
 @Slf4j
 @Controller
@@ -21,9 +25,11 @@ import tacos.data.OrderRepository;
 @RequestMapping("/orders")
 public class OrderController {
 	private OrderRepository orderRepo;
+	private UserRepository userRepo;
 	
-	public OrderController(OrderRepository orderRepo) {
+	public OrderController(OrderRepository orderRepo, UserRepository userRepo) {
 		this.orderRepo = orderRepo;
+		this.userRepo = userRepo;
 	}
 	
 	@GetMapping("/current")
@@ -34,13 +40,19 @@ public class OrderController {
 	
 	
 	@PostMapping()
-	public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus) {
+	public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus, Principal principal) {
 		// return order form if any error has occurred
 		if(errors.hasErrors()) {
 			return "orderForm";
 		}
 		
 		log.info("Order Submitted " + order);
+		
+		// get User who placed the order
+		User user = userRepo.findByUsername(principal.getName());
+		order.setUser(user);
+		
+		// save the order
 		orderRepo.save(order);
 		sessionStatus.setComplete();
 		return "redirect:/";

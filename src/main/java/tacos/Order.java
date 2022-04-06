@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -58,4 +59,7 @@ public class Order implements Serializable{
 	public void addDesign(Taco design) {
 		this.tacos.add(design);
 	}
+	
+	@ManyToOne
+	private User user;
 }
