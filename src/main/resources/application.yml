@@ -1,0 +1,15 @@
+server:
+  port: 8443
+  ssl:
+    key-store: file:///Users/prashantsingh/mykeys.jks
+    key-store-password: letmein
+    key-password: letmein
+    
+    
+greeting:
+  welcome: You are using ${spring.application.name}
+
+taco:
+  orders:
+    pageSize: 10
+
